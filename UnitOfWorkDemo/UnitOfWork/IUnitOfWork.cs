@@ -6,6 +6,7 @@ namespace UnitOfWorkDemo.UnitOfWork
     {
         IEmployeeRepository EmployeeRepository { get; }
         IManagerRepository ManagerRepository { get; }
+        bool CheckStatus();
         void SaveChanges();
     }
 }

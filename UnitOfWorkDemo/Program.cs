@@ -1,4 +1,9 @@
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using System.Text.Json;
+using System.Text;
+using UnitOfWorkDemo.HealthCheck;
 using UnitOfWorkDemo.Repository;
 using UnitOfWorkDemo.Repository.Context;
 using UnitOfWorkDemo.Repository.Contracts;
@@ -19,10 +24,18 @@ builder.Services.AddDbContext<UnitOfWorkDbContext>(options =>
                                                 options.UseSqlServer(connectionString: connString)
                                         );
 
+builder.Services.AddHealthChecks().AddCheck<SqlServerHealthCheck>("SqlServer");
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 //builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
 var app = builder.Build();
+
+app.MapHealthChecks("health", new HealthCheckOptions
+{
+    ResponseWriter = ResponseWriter.CustomResponseWriter
+});
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

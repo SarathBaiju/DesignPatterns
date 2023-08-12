@@ -23,5 +23,11 @@ namespace UnitOfWorkDemo.UnitOfWork
         {
             dbContext.SaveChanges();
         }
+
+        public bool CheckStatus()
+        {
+           var result = dbContext.Employee.First();
+            return true;
+        }
     }
 }
